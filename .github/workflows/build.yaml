@@ -10,7 +10,7 @@ defaults:
     working-directory: infra/
 env:
   GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS_KEY}}
-  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GAR_LOCATION: ${{ vars.GAR_LOCATION }}
   GAR_REPO_ID: ${{ vars.GAR_REPO_ID }}
   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
