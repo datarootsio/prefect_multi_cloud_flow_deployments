@@ -177,6 +177,11 @@ jobs:
           # Push Docker image to Amazon ECR
           docker push "${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.IMAGE_NAME }}:latest"
      
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
       - name: Login to Azure ACR
         uses: azure/docker-login@v1
         with:
@@ -186,9 +191,6 @@ jobs:
      
       - name: Tag and Push Docker Image to Azure ECR
         run: |
-          # Login to ACR
-          az acr login --name ${{ env.ACR_USERNAME}}
-
           # Tag Docker image
           docker tag "${{ env.IMAGE_NAME }}:latest" "${{ env.ACR_REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest"
 
