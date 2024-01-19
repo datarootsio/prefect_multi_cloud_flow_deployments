@@ -22,6 +22,12 @@ jobs:
           prefect_account_id="${{ secrets.PREFECT_ACCOUNT_ID }}" 
           prefect_workspace_id="${{ secrets.PREFECT_WORKSPACE_ID }}" 
           prefect_api_key="${{ secrets.PREFECT_API_KEY }}"
+          aws_access_key="${{ secrets.AWS_ACCESS_KEY }}"
+          aws_secret_key="${{ secrets.AWS_SECRET_KEY }}"
+          azurerm_client_id="${{ secrets.AZURE_AD_CLIENT_ID }}"
+          azurerm_client_secret="${{ secrets.AZURE_AD_CLIENT_SECRET }}"
+          azurerm_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          azurerm_tenant_id="${{ secrets.AZURE_AD_TENANT_ID }}"
           EOF
       - name: Terraform Init
         id: init

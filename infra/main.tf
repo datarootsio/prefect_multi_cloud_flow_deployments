@@ -39,10 +39,33 @@ module "prefect_cloud_run_work_pool" {
 module "aws" {
   source             = "../modules/aws"
   app_name           = var.app_name
-  app_environment    = var.app_environment
+  app_environment    = var.environment
   public_subnet      = var.public_subnet
   availability_zones = var.availability_zones
   aws_region         = var.aws_region
   aws_access_key     = var.aws_access_key
   aws_secret_key     = var.aws_secret_key
+}
+
+module "azurerm" {
+  source              = "../modules/azure"
+  name                = var.azurerm_container_registry_name
+  resource_group_name = var.azurerm_resource_group_name
+  location            = var.azurerm_region
+  environment         = var.environment
+}
+
+module "prefect_aci_work_pool" {
+  source               = "../modules/prefect"
+  workpool_name        = "azure-container-instance-infra"
+  workpool_type        = "azure-container-instance:push"
+  workpool_status      = var.workpool_status
+  prefect_workspace_id = var.prefect_workspace_id
+  base_job_template = templatefile("aci-base-job-template.json", { CONTAINER_REGISTRY = var.azurerm_container_registry_name,
+    SUBSCRIPTION_ID     = var.azurerm_subscription_id,
+    RESOURCE_GROUP_NAME = var.azurerm_resource_group_name,
+    IMAGE_NAME          = "run-prefect-job",
+  TAG = "latest" })
+  prefect_api_key    = var.prefect_api_key
+  prefect_account_id = var.prefect_account_id
 }
