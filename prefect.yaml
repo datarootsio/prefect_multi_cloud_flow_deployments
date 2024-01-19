@@ -3,7 +3,7 @@
 # control along with your flow code.
 
 # Generic metadata about this project
-name: build_data_platform_with_prefect
+name: prefect_multi_cloud_flow_deployments
 prefect-version: 2.14.12
 
 # build section allows you to manage and build docker images
@@ -34,7 +34,6 @@ deployments:
     destination_table: dezoomcamp.transactions
   work_pool:
     name: cloud-run-job-infra
-    work_queue_name: dev
 
 - name: aws-ecs-tasks
   version:
@@ -49,4 +48,17 @@ deployments:
     destination_table: dezoomcamp.transactions
   work_pool:
     name: aws-ecs-infra
-    work_queue_name: dev
+
+- name: azure-container-instance-runs
+  version:
+  tags: []
+  description: Flows that will run in Azure environment
+  schedule:
+  entrypoint: jobs/run_transactions_job.py:etl_gcs_to_bq
+  parameters:
+    name_of_file: transactions
+    bucket_name: test-folder-pipeline
+    gcp_project_id: chrome-epigram-386922
+    destination_table: dezoomcamp.transactions
+  work_pool:
+    name: azure-container-instance-infra
